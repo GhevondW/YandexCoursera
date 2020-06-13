@@ -44,10 +44,27 @@ private:
   deque<Node> nodes;
 };
 
-
 Node* Next(Node* me) {
-    //TODO
-    return nullptr;
+    if(!me) return nullptr;
+    
+    if(me->right != nullptr){
+        Node* n = me->right;
+        while (n->left != nullptr) {
+            n = n->left;
+        }
+        return n;
+    }
+    else{
+        Node* current = me;
+        Node* p = current->parent;
+        if(!p) return nullptr;
+        while (p->left != current) {
+            current = p;
+            p = current->parent;
+            if(!p) return nullptr;
+        }
+        return p;
+    }
 }
 
 
