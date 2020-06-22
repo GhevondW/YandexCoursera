@@ -1,3 +1,4 @@
+#if 0
 #include "geo2d.h"
 #include "game_object.h"
 
@@ -181,3 +182,4 @@ int main() {
   RUN_TEST(tr, TestAddingNewObjectOnMap);
   return 0;
 }
+#endif
