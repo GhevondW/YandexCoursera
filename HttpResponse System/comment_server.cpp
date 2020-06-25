@@ -30,7 +30,7 @@ inline std::string GetCommentByValue(int value)
             return "OK";
             break;
         case 404:
-            return "NotFound";
+            return "Not found";
             break;
         case 302:
             return "Found";
@@ -150,7 +150,7 @@ public:
                 comments_.emplace_back();
                 auto response = to_string(comments_.size() - 1);
                 resp.SetCode(HttpCode::Ok)
-                .AddHeader("Content-Length", std::to_string(response.size()))
+//                .AddHeader("Content-Length", std::to_string(response.size()))
                 .SetContent(response);
             }
             else if(req.path == "/add_comment"){
@@ -199,14 +199,14 @@ public:
                   response += c + '\n';
                 }
                 resp.SetCode(HttpCode::Ok).
-                AddHeader("Content-Length", std::to_string(response.size())).
+//                AddHeader("Content-Length", std::to_string(response.size())).
                 SetContent(response);
 //                os << "HTTP/1.1 200 OK\n" << "Content-Length: " << response.size() << response;
               } else if (req.path == "/captcha") {
 //                os << "HTTP/1.1 200 OK\n" << "Content-Length: 80\n" << "\n"
 //                  << "What's the answer for The Ultimate Question of Life, the Universe, and Everything?";
-                resp.SetCode(HttpCode::Ok).
-                AddHeader("Content-Length", std::to_string(80))
+                resp.SetCode(HttpCode::Ok)
+//                AddHeader("Content-Length", std::to_string(80))
                 .SetContent("What's the answer for The Ultimate Question of Life, the Universe, and Everything?");
               } else {
 //                os << "HTTP/1.1 404 Not found\n\n";
