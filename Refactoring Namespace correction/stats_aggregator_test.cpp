@@ -1,8 +1,8 @@
 #include "stats_aggregator.h"
 #include "test_runner.h"
-
 #include <sstream>
 using namespace std;
+namespace  StatsAggregators{
 
 string PrintedValue(const StatsAggregator& aggr) {
   ostringstream output;
@@ -10,7 +10,7 @@ string PrintedValue(const StatsAggregator& aggr) {
   return output.str();
 }
 
-void StatsAggregators::TestSum() {
+void TestSum() {
   Sum aggr;
   ASSERT_EQUAL(PrintedValue(aggr), "Sum is 0");
 
@@ -22,7 +22,7 @@ void StatsAggregators::TestSum() {
   ASSERT_EQUAL(PrintedValue(aggr), "Sum is 26");
 }
 
-void StatsAggregators::TestMin() {
+void TestMin() {
   Min aggr;
   ASSERT_EQUAL(PrintedValue(aggr), "Min is undefined");
 
@@ -34,7 +34,7 @@ void StatsAggregators::TestMin() {
   ASSERT_EQUAL(PrintedValue(aggr), "Min is -1");
 }
 
-void StatsAggregators::TestMax() {
+void TestMax() {
   Max aggr;
   ASSERT_EQUAL(PrintedValue(aggr), "Max is undefined");
 
@@ -46,7 +46,7 @@ void StatsAggregators::TestMax() {
   ASSERT_EQUAL(PrintedValue(aggr), "Max is 16");
 }
 
-void StatsAggregators::TestAverage() {
+void TestAverage() {
   Average aggr;
   ASSERT_EQUAL(PrintedValue(aggr), "Average is undefined");
 
@@ -58,7 +58,7 @@ void StatsAggregators::TestAverage() {
   ASSERT_EQUAL(PrintedValue(aggr), "Average is 6");
 }
 
-void StatsAggregators::TestMode() {
+void TestMode() {
   Mode aggr;
   ASSERT_EQUAL(PrintedValue(aggr), "Mode is undefined");
 
@@ -76,7 +76,7 @@ void StatsAggregators::TestMode() {
   ASSERT_EQUAL(PrintedValue(aggr), "Mode is 8");
 }
 
-void StatsAggregators::TestComposite() {
+void TestComposite() {
   Composite aggr;
   aggr.Add(make_unique<Sum>());
   aggr.Add(make_unique<Min>());
@@ -96,4 +96,6 @@ void StatsAggregators::TestComposite() {
   expected += "Average is 8\n";
   expected += "Mode is 16\n";
   ASSERT_EQUAL(PrintedValue(aggr), expected);
+}
+
 }

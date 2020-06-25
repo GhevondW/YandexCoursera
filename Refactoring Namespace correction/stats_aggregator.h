@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __StatsAggregator_H__
+#define __StatsAggregator_H__
 
 #include <ostream>
 #include <limits>
@@ -85,3 +86,4 @@ void TestMode();
 void TestComposite();
 
 }
+#endif
