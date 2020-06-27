@@ -1,3 +1,4 @@
+#if 0
 #include "test_runner.h"
 
 #include <functional>
@@ -17,16 +18,18 @@ public:
     
     const T& Get() const
     {
-        if(!HasValue()){
-            T res = _fInit();
-            _Obj = std::make_optional(move(res));
+        _mObjLock.lock();
+        if(!_Obj){
+            _Obj = _fInit();
         }
+        _mObjLock.unlock();
         return _Obj.value();
     }
 
 private:
     mutable std::optional<T> _Obj;
     const std::function<T()> _fInit;
+    mutable std::mutex _mObjLock;
 };
 
 void UseExample() {
@@ -57,3 +60,4 @@ int main() {
   RUN_TEST(tr, TestInitializerIsntCalled);
   return 0;
 }
+#endif
