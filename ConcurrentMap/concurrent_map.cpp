@@ -26,7 +26,13 @@ public:
     };
 
     struct ReadAccess {
+        ReadAccess(const V& ref, std::mutex& m)
+        :ref_to_value(ref),
+        _lock(m){ /*_lock.lock();*/ }
+        ~ReadAccess(){ _lock.unlock(); }
+        
         const V& ref_to_value;
+        std::mutex& _lock;
     };
 public:
     
@@ -47,7 +53,8 @@ public:
     {
         if(Has(key)){
             size_t index = _CalcIndex(key);
-            return {_mData.at(index).second.at(key)};
+            _mData.at(index).first.lock();
+            return {_mData.at(index).second.at(key), _mData.at(index).first};
         }
         throw std::out_of_range{"out of range"};
     }
