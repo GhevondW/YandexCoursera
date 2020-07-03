@@ -1,3 +1,4 @@
+#if 0
 #include "test_runner.h"
 #include <functional>
 #include <memory>
@@ -131,6 +132,7 @@ public:
         _out<<email->from<<endl;
         _out<<email->to<<endl;
         _out<<email->body<<endl;
+        Worker::PassOn(move(email));
     }
     
 private:
@@ -232,3 +234,4 @@ int main() {
     
   return 0;
 }
+#endif
