@@ -1,3 +1,4 @@
+#if 0
 #include "Common.h"
 #include "test_runner.h"
 #include <sstream>
@@ -95,5 +96,7 @@ void Test() {
 int main() {
   TestRunner tr;
   RUN_TEST(tr, Test);
+    cout<<sizeof(void*)<<endl;
   return 0;
 }
+#endif
