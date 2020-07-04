@@ -29,11 +29,23 @@ class Value : public Expression {
   int _value;
 };
 
-class Sum : public Expression {
+class BinaryExpression : public Expression{
+public:
+    BinaryExpression(ExpressionPtr left, ExpressionPtr right)
+    :_left(move(left)),
+    _right(move(right)){}
+    
+    virtual ~BinaryExpression(){}
+protected:
+    ExpressionPtr _left;
+    ExpressionPtr _right;
+};
+
+class Sum : public BinaryExpression {
  public:
   Sum(ExpressionPtr left, ExpressionPtr right)
-    : _left(move(left)),
-    _right(move(right)) {}
+    :BinaryExpression(move(left), move(right))
+    {}
     
   int Evaluate() const override {
     return _left->Evaluate() + _right->Evaluate();
@@ -42,16 +54,13 @@ class Sum : public Expression {
   string ToString() const override {
     return "(" + _left->ToString() + ")+(" + _right->ToString() + ")";
   }
- private:
-  ExpressionPtr _left;
-  ExpressionPtr _right;
 };
 
-class Product : public Expression {
+class Product : public BinaryExpression {
  public:
   Product(ExpressionPtr left, ExpressionPtr right)
-    :_left(move(left)),
-    _right(move(right)) {}
+    :BinaryExpression(move(left), move(right)){}
+    
   int Evaluate() const override {
     return _left->Evaluate() * _right->Evaluate();
   }
@@ -59,9 +68,7 @@ class Product : public Expression {
   string ToString() const override {
     return "(" + _left->ToString() + ")*(" + _right->ToString() + ")";
   }
- private:
-    ExpressionPtr _left;
-    ExpressionPtr _right;
+    
 };
 }
 
@@ -69,10 +76,10 @@ ExpressionPtr Value(int value) {
   return make_unique<Expressions::Value>(Expressions::Value(value));
 }
 ExpressionPtr Sum(ExpressionPtr left, ExpressionPtr right) {
-  return make_unique<Expressions::Sum>(Expressions::Sum(move(left), move(right)));
+    return unique_ptr<Expressions::Sum>{new Expressions::Sum(move(left), move(right))};
 }
 ExpressionPtr Product(ExpressionPtr left, ExpressionPtr right) {
-  return make_unique<Expressions::Product>(Expressions::Product(move(left), move(right)));
+    return unique_ptr<Expressions::Product>{new Expressions::Product(move(left), move(right))};
 }
 
 void Test() {
