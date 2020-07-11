@@ -1,6 +1,7 @@
 #include "test_runner.h"
 
 #include <cstddef>
+#include <utility>
 
 using namespace std;
 
@@ -8,20 +9,24 @@ using namespace std;
 template <typename T>
 class UniquePtr {
 public:
-    UniquePtr() = default;
+    UniquePtr(){ _data = nullptr; }
     UniquePtr(T * ptr)
-    :_data(ptr)
+    :_data(std::move(ptr))
     {}
-    
+
     UniquePtr(const UniquePtr&) = delete;
-    UniquePtr(UniquePtr&& other)
+    UniquePtr(UniquePtr&& other) noexcept
     {
-        _data = other._data;
+        _data = std::move(other._data);
         other._data = nullptr;
     }
-    
+
     UniquePtr& operator = (const UniquePtr&) = delete;
-    UniquePtr& operator = (nullptr_t){  _Clear();  }
+    UniquePtr& operator = (nullptr_t val)
+    {
+        _Clear();
+        return *this;
+    }
     UniquePtr& operator = (UniquePtr&& other)
     {
         _Clear();
@@ -29,7 +34,7 @@ public:
         other._data = nullptr;
         return *this;
     }
-    
+
     ~UniquePtr(){ _Clear(); }
 
     T& operator * () const { return *_data; }
@@ -57,19 +62,20 @@ public:
     }
 
     T * Get() const { return _data; }
-    
+
 private:
-    
+
     inline void _Clear(){
         if(_data != nullptr){
             delete _data;
             _data = nullptr;
         }
     }
-    
+
 private:
-    T* _data = nullptr;
+    T* _data;
 };
+
 
 
 struct Item {
