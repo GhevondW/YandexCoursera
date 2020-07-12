@@ -9,46 +9,45 @@
 #ifndef booking_h
 #define booking_h
 
+#include <iostream>
 namespace RAII {
 
-template<class Provider>
-class Booking
-{
-public:
-    Booking(Provider* provider, int count)
-    :_provider(provider),
-    _id(count)
-    {}
-    
-    Booking(const Booking&) = delete;
-    Booking& operator=(const Booking&) = delete;
-    Booking(Booking&& other)
-    :_provider(other._provider),
-    _id(other._id)
-    {
-        other._provider = nullptr;
+template <typename Provider>
+class Booking {
+ public:
+  using BookingId = typename Provider::BookingId;
+  Booking(Provider* p, const BookingId& id): provider(p), booking_id(id){ }
+  ~Booking() {
+    if (provider != nullptr) {
+      provider->CancelOrComplete(*this);
     }
-    
-    Booking& operator=(Booking&& other)
-    {
-        this->_provider = other._provider;
-        this->_id = other._id;
-        other._provider = nullptr;
-    }
-    
-    ~Booking(){
-        if(_provider != nullptr){
-            _provider->CancelOrComplete(*this);
-        }
-    }
-    
-    
-private:
-    Provider* _provider{nullptr};
-    int _id{};
-};
+  }
 
+  Booking(const Booking&) = delete;
+
+  Booking(Booking&& other)
+      : provider(other.provider),
+        booking_id(other.booking_id)
+  {
+    other.provider = nullptr;
+  }
+
+  Booking& operator = (const Booking&) = delete;
+
+  Booking& operator = (Booking&& other) {
+    std::swap(provider, other.provider);
+    std::swap(booking_id, other.booking_id);
+    return *this;
+  }
+
+  BookingId GetId() const {
+    return booking_id;
+  }
+ private:
+  Provider* provider;
+  BookingId booking_id;
 };
+}
 
 #endif /* booking_h */
 

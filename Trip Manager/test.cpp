@@ -63,10 +63,21 @@ void TestHotelOverbooking() {
   Assert(false, "Hotel overbooking was expected");
 }
 
+struct A {
+    A() = default;
+    A(const A& other) = delete;
+    A& operator=(const A&) = delete;
+    A(A&& other) = default;
+    A& operator=(A&&) = default;
+    int a;
+};
+
 int main() {
+
   TestRunner tr;
   RUN_TEST(tr, TestNoOverbooking);
   RUN_TEST(tr, TestFlightOverbooking);
   RUN_TEST(tr, TestHotelOverbooking);
+
   return 0;
 }
