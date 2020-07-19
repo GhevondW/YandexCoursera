@@ -2,8 +2,6 @@
 
 using namespace std;
 
-namespace  StatsAggregators{
-
 template <typename T>
 ostream& operator << (ostream& os, const optional<T>& v) {
   if (v) {
@@ -14,14 +12,15 @@ ostream& operator << (ostream& os, const optional<T>& v) {
   return os;
 }
 
+namespace StatsAggregators {
 void Composite::Process(int value) {
-  for (auto& aggr : aggregators) {
+  for (auto &aggr : aggregators) {
     aggr->Process(value);
   }
 }
 
-void Composite::PrintValue(std::ostream& output) const {
-  for (const auto& aggr : aggregators) {
+void Composite::PrintValue(std::ostream &output) const {
+  for (const auto &aggr : aggregators) {
     aggr->PrintValue(output);
     output << '\n';
   }
@@ -35,7 +34,7 @@ void Sum::Process(int value) {
   sum += value;
 }
 
-void Sum::PrintValue(std::ostream& out) const {
+void Sum::PrintValue(std::ostream &out) const {
   out << "Sum is " << sum;
 }
 
@@ -45,7 +44,7 @@ void Min::Process(int value) {
   }
 }
 
-void Min::PrintValue(std::ostream& out) const {
+void Min::PrintValue(std::ostream &out) const {
   out << "Min is " << current_min;
 }
 
@@ -55,7 +54,7 @@ void Max::Process(int value) {
   }
 }
 
-void Max::PrintValue(std::ostream& out) const {
+void Max::PrintValue(std::ostream &out) const {
   out << "Max is " << current_max;
 }
 
@@ -64,7 +63,7 @@ void Average::Process(int value) {
   ++total;
 }
 
-void Average::PrintValue(std::ostream& out) const {
+void Average::PrintValue(std::ostream &out) const {
   out << "Average is ";
   if (total == 0) {
     out << "undefined";
@@ -80,8 +79,7 @@ void Mode::Process(int value) {
   }
 }
 
-void Mode::PrintValue(std::ostream& out) const {
+void Mode::PrintValue(std::ostream &out) const {
   out << "Mode is " << mode;
 }
-
 }

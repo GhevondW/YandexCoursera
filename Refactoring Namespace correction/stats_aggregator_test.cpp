@@ -1,10 +1,11 @@
 #include "stats_aggregator.h"
 #include "test_runner.h"
 #include <sstream>
-using namespace std;
-namespace  StatsAggregators{
 
-string PrintedValue(const StatsAggregator& aggr) {
+using namespace std;
+
+namespace StatsAggregators {
+string PrintedValue(const StatsAggregator &aggr) {
   ostringstream output;
   aggr.PrintValue(output);
   return output.str();
@@ -97,5 +98,4 @@ void TestComposite() {
   expected += "Mode is 16\n";
   ASSERT_EQUAL(PrintedValue(aggr), expected);
 }
-
 }

@@ -9,21 +9,21 @@
 #include <iostream>
 #include <unordered_map>
 #include <functional>
+#include "profile.h"
 using namespace std;
-using namespace StatsAggregators;
 
 void TestAll();
 
-unique_ptr<StatsAggregator> ReadAggregators(istream& input) {
-  const unordered_map<string, std::function<unique_ptr<StatsAggregator>()>> known_builders = {
-    {"sum", [] { return make_unique<Sum>(); }},
-    {"min", [] { return make_unique<Min>(); }},
-    {"max", [] { return make_unique<Max>(); }},
-    {"avg", [] { return make_unique<Average>(); }},
-    {"mode", [] { return make_unique<Mode>(); }}
+unique_ptr<StatsAggregators::StatsAggregator> ReadAggregators(istream& input) {
+  const unordered_map<string, std::function<unique_ptr<StatsAggregators::StatsAggregator>()>> known_builders = {
+    {"sum", [] { return make_unique<StatsAggregators::Sum>(); }},
+    {"min", [] { return make_unique<StatsAggregators::Min>(); }},
+    {"max", [] { return make_unique<StatsAggregators::Max>(); }},
+    {"avg", [] { return make_unique<StatsAggregators::Average>(); }},
+    {"mode", [] { return make_unique<StatsAggregators::Mode>(); }}
   };
 
-  auto result = make_unique<Composite>();
+  auto result = make_unique<StatsAggregators::Composite>();
 
   int aggr_count;
   input >> aggr_count;
@@ -52,11 +52,11 @@ int main() {
 
 void TestAll() {
   TestRunner tr;
-  RUN_TEST(tr, TestSum);
-  RUN_TEST(tr, TestMin);
-  RUN_TEST(tr, TestMax);
-  RUN_TEST(tr, TestAverage);
-  RUN_TEST(tr, TestMode);
-  RUN_TEST(tr, TestComposite);
+  RUN_TEST(tr, StatsAggregators::TestSum);
+  RUN_TEST(tr, StatsAggregators::TestMin);
+  RUN_TEST(tr, StatsAggregators::TestMax);
+  RUN_TEST(tr, StatsAggregators::TestAverage);
+  RUN_TEST(tr, StatsAggregators::TestMode);
+  RUN_TEST(tr, StatsAggregators::TestComposite);
 }
 #endif
