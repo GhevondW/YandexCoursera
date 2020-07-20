@@ -1,3 +1,4 @@
+#if 0
 //
 //  main.cpp
 //  Cursera_red
@@ -6,42 +7,22 @@
 //  Copyright © 2020 Ghevond Gevorgyan. All rights reserved.
 //
 
-#include <stdio.h>
-#include <iostream>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <array>
-#include <string>
-#include <stdlib.h>
-#include <functional>
+#include "NetBase.h"
 
+using namespace nbase;
 using namespace std;
 
-using AddrInfoUniquePtr = std::unique_ptr<addrinfo, function<void(addrinfo*)>>;
-
-addrinfo CreateAddrInfoHint(int family = AF_UNSPEC, int sock_type = SOCK_STREAM)
-{
-    addrinfo ret;
-    memset(&ret, 0, sizeof(ret));
-    
-    ret.ai_family = family;
-    ret.ai_socktype = sock_type;
-    
-    return ret;
-}
-
-void PrintIPInfoByHost(const std::string& host, int port)
+void PrintIPInfoByHost(const std::string& host, const std::string& port_in)
 {
     addrinfo hint = CreateAddrInfoHint();
     addrinfo* info{nullptr};
     char ipstr[INET6_ADDRSTRLEN];
 //    AddrInfoUniquePtr info{nullptr, [](addrinfo* obj){ freeaddrinfo(obj); }};
     
-    int status = getaddrinfo(host.c_str(),
-                 std::to_string(port).c_str(),
+    const char* host_cstr = host.c_str();
+    
+    int status = getaddrinfo(host_cstr,
+                 port_in.c_str(),
                  &hint,
                  &(info));
     
@@ -86,7 +67,8 @@ int main()
 {
     std::cout<<"Hello Net!"<<std::endl;
     
-    PrintIPInfoByHost("www.gmail.com", 80);
+    PrintIPInfoByHost("google.com", "3490");
     
     return 0;
 }
+#endif
