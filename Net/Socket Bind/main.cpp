@@ -1,4 +1,4 @@
-
+#if 0
 //
 //  main.cpp
 //  Cursera_red
@@ -12,10 +12,10 @@ using namespace nbase;
 
 void BindSocketWithHost()
 {
-    addrinfo hint = CreatePassiveAddrInfoHint();
+    addrinfo hint = CreateAddrInfoHint();
     addrinfo* info;
     
-    int getinfo_res = getaddrinfo(nullptr,
+    int getinfo_res = getaddrinfo("google.com",
                                   "3490",
                                   &hint,
                                   &info);
@@ -37,3 +37,4 @@ int main()
     BindSocketWithHost();
     return 0;
 }
+#endif
