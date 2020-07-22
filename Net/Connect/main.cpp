@@ -5,7 +5,7 @@
 //  Created by Ghevond Gevorgyan on 7/20/20.
 //  Copyright © 2020 Ghevond Gevorgyan. All rights reserved.
 //
-
+#if 0
 #include "NetBase.h"
 
 using namespace std;
@@ -40,3 +40,4 @@ int main(){
     
     return 0;
 }
+#endif
