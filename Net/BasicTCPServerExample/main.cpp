@@ -11,10 +11,11 @@
 #include <sys/uio.h>
 #include <unistd.h>
 
+
 using namespace std;
 using namespace nbase;
 
-#define PORT "54000"
+#define PORT "54001"
 #define BACKLOG 10
 #define MAX_BUFFER_SIZE 1024
 
@@ -42,7 +43,7 @@ int main()
         exit(EXIT_FAILURE);
     }
     
-#if 0 //TODO
+#if 1 //TODO
     // Forcefully attaching socket to the port 8080
     int opt = 1;
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
@@ -75,13 +76,15 @@ int main()
     socklen_t client_addr_len = sizeof(client_address);
     memset(&client_address, 0, client_addr_len);
     
+    std::cout<<"Start Waiting..."<<std::endl;
     client_socket = accept(server_fd, (sockaddr*)&client_address, &client_addr_len);
     if (client_socket < 0)
     {
         perror("accept");
         exit(EXIT_FAILURE);
     }
-    
+    std::cout<<"Accepted..."<<std::endl;
+
     char buffer[MAX_BUFFER_SIZE];
     long result_bytes{0};
     result_bytes = read( client_socket, buffer, MAX_BUFFER_SIZE);
@@ -92,5 +95,7 @@ int main()
     printf("Hello message sent\n");
     
     freeaddrinfo(info);
+    close(server_fd);
+    close(client_socket);
     return 0;
 }
