@@ -19,6 +19,7 @@
 #include <array>
 #include <string>
 #include <stdlib.h>
+#include <cstring>
 //#include <functional>
 
 namespace nbase {
