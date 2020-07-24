@@ -10,7 +10,7 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
-#include <map>
+
 
 using namespace std;
 using namespace nbase;
@@ -21,9 +21,6 @@ using namespace nbase;
 
 int main()
 {
-
-    std::map<std::string, int> _data;
-
     //address creation
     addrinfo hint = CreatePassiveAddrInfoHint(AF_INET);
     addrinfo* info{nullptr};

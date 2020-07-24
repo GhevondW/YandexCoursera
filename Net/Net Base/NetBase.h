@@ -28,6 +28,7 @@ namespace nbase {
 addrinfo CreateAddrInfoHint(int family = AF_UNSPEC, int sock_type = SOCK_STREAM);
 addrinfo CreatePassiveAddrInfoHint(int family = AF_UNSPEC, int sock_type = SOCK_STREAM);
 void PrintAddrInfo(const addrinfo*);
+std::string GetString(char* str, size_t len);
 
 }
 

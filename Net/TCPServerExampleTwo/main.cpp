@@ -94,8 +94,7 @@ int main()
         long result_bytes{0};
         result_bytes = read(clientfd, buffer, MAX_BUFFER_SIZE);
 
-        std::string request{buffer};
-        cout<<request<<endl;
+        std::string request = nbase::GetString(buffer, result_bytes);
         
         database.Handle(db::CreateRequest(request));
 

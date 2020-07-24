@@ -23,7 +23,7 @@ struct DbRequest
 DbRequest CreateRequest(std::string str)
 {
     DbRequest req;
-    if(str.find("PRINT")){
+    if(str.find("PRINT") != std::string::npos){
         req.cmd = Command::PRINT;
     }
     else if(str.empty()){
@@ -49,20 +49,20 @@ public:
 
     void Handle(DbRequest req)
     {
-        std::cout<<"H"<<std::endl;
+        
         if(req.cmd == Command::ADD){
-            std::cout<<"T"<<std::endl;
+            
             if(_data.count(req.txt)){
-                std::cout<<"B"<<std::endl;
+                
                 ++_data[req.txt];
             }
             else{
-                std::cout<<"I"<<std::endl;
+                
                 _data.insert({std::move(req.txt), 0});
             }
         }
         else if(req.cmd == Command::PRINT){
-            std::cout<<"O"<<std::endl;
+            
             Print();
         }
     }

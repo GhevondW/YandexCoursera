@@ -72,5 +72,16 @@ void PrintAddrInfo(const addrinfo* info)
     
 }
 
+std::string GetString(char* str, size_t len)
+{
+    std::string ret;
+    for (size_t i = 0; i < (len - 2); i++)
+    {
+        /* code */
+        ret.push_back(str[i]);
+    }
+    return ret;
+}
+
 }
 
