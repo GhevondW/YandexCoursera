@@ -18,7 +18,7 @@ using namespace std;
 
 int main()
 {
-
+    cout<<"Server"<<endl;
     db::Database database{};
 
     //createing localaddresinfo
@@ -40,6 +40,8 @@ int main()
         perror("[ERROR CREATE SOCKET DESCRIPTOR]");
         exit(EXIT_FAILURE);
     }
+
+    cout<<"[SOCK]"<<serverfd<<endl;
 
 #if 1 //TODO
     // Forcefully attaching socket to the port 8080
@@ -99,7 +101,7 @@ int main()
             if(result_bytes <= 0){ break; }
 
             std::string request = nbase::GetString(buffer, result_bytes);
-
+            cout<<"[REQ]"<<request<<endl;
             if(request == "END"){ break; }
 
             database.Handle(db::CreateRequest(request));
