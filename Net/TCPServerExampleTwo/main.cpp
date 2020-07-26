@@ -1,5 +1,5 @@
 #include <iostream>
-#include "/home/ghevondw/Desktop/CPP/YandexCoursera/Net/Net Base/NetBase.h"
+#include "/home/ghevond/Desktop/CPP/YandexCoursera/Net/Net Base/NetBase.h"
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
@@ -92,11 +92,18 @@ int main()
 
         char buffer[MAX_BUFFER_SIZE];
         long result_bytes{0};
-        result_bytes = read(clientfd, buffer, MAX_BUFFER_SIZE);
+        while(true)
+        {
+            cout<<"...[READ]..."<<endl;
+            result_bytes = read(clientfd, buffer, MAX_BUFFER_SIZE);
+            if(result_bytes <= 0){ break; }
 
-        std::string request = nbase::GetString(buffer, result_bytes);
-        
-        database.Handle(db::CreateRequest(request));
+            std::string request = nbase::GetString(buffer, result_bytes);
+
+            if(request == "END"){ break; }
+
+            database.Handle(db::CreateRequest(request));
+        }
 
         // char res[] = "Good!!!";
         // send(clientfd , res , strlen(res) , 0 );
