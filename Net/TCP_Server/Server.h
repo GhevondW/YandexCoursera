@@ -18,7 +18,8 @@
 
 namespace gnet
 {
-    using SOCKETFD = int;
+    using SOCKETFD  = int;
+    using CSOCKETFD = const int;
 
     struct ServerBase
     {
@@ -27,10 +28,11 @@ namespace gnet
         ServerBase(std::string Host, std::string Port):_Host(Host), _Port(Port){};
         virtual             ~ServerBase(){};
 
-        virtual bool        Init() = 0;
-        virtual void        Run() = 0;
-        virtual bool        Restart() = 0;
-        virtual int         Send(SOCKETFD fd, const std::string&) const = 0;
+        virtual auto        Init() -> bool = 0;
+        virtual auto        Run() -> void = 0;
+        virtual auto        Restart() -> bool = 0;
+        virtual int         Send(CSOCKETFD fd, const std::string&) const = 0;
+        virtual auto        CloseSocketFd(CSOCKETFD fd) const -> int = 0;
 
         const std::string&  GetHost() const { return _Host; }
         const std::string&  GetPort() const { return _Port; }

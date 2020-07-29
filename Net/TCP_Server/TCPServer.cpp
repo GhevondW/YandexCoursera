@@ -1,4 +1,5 @@
 #include "TCPServer.h"
+#include "ThreadPool.h"
 #define BACKLOG 100
 #define MAX_BUFFER_SIZE 1024
 
@@ -16,6 +17,8 @@ TCPServer::~TCPServer()
     
 bool TCPServer::Init()
 {
+    _thread_pool = std::make_unique<TPool>();
+
     freeaddrinfo(_info);
     _info = nullptr;
     addrinfo hint;
@@ -36,7 +39,6 @@ bool TCPServer::Init()
 
 void TCPServer::Run()
 {
-    char buff[MAX_BUFFER_SIZE];
     while (true)
     {
         SOCKETFD listening = _CreateSocket();
@@ -46,20 +48,38 @@ void TCPServer::Run()
 
         SOCKETFD client = _WaitForConnection(listening);
         if(client != -1){
-            close(listening);
-            int bytes_received{};
-            do
-            {
-                memset(buff, 0, MAX_BUFFER_SIZE);
-                bytes_received = recv(client, buff, MAX_BUFFER_SIZE, 0);
-                if(bytes_received > 0){
-                    if(_callback != nullptr){
-                        _callback(this, client, std::string(buff, 0, bytes_received));
+            _thread_pool->EnqueueTask([=](){
+                char buff[MAX_BUFFER_SIZE];
+                // close(listening);
+                int bytes_received{};
+                do
+                {
+                    memset(buff, 0, MAX_BUFFER_SIZE);
+                    bytes_received = recv(client, buff, MAX_BUFFER_SIZE, 0);
+                    std::string user_msg = std::string(buff, 0, bytes_received);
+                    if(bytes_received > 0){
+                        if(_callback != nullptr){
+                             _callback(this, client, user_msg);
+                        }
                     }
-                }
+                } while (bytes_received > 0);
+                close(client);
+            });
+            // char buff[MAX_BUFFER_SIZE];
+            // close(listening);
+            // int bytes_received{};
+            // do
+            // {
+            //     memset(buff, 0, MAX_BUFFER_SIZE);
+            //     bytes_received = recv(client, buff, MAX_BUFFER_SIZE, 0);
+            //     if(bytes_received > 0){
+            //         if(_callback != nullptr){
+            //             _callback(this, client, std::string(buff, 0, bytes_received));
+            //         }
+            //     }
 
-            } while (bytes_received > 0);
-            close(client);
+            // } while (bytes_received > 0);
+            // close(client);
         }
     }
     
@@ -70,7 +90,7 @@ bool TCPServer::Restart()
     return false;
 }
 
-int TCPServer::Send(const SOCKETFD fd, const std::string& msg) const
+int TCPServer::Send(CSOCKETFD fd, const std::string& msg) const
 {
     return send(fd, msg.c_str(), msg.size() - 1, 0);
 }
@@ -78,6 +98,12 @@ int TCPServer::Send(const SOCKETFD fd, const std::string& msg) const
 void TCPServer::_Cleanup()
 {
     freeaddrinfo(_info);
+}
+
+int TCPServer::CloseSocketFd(CSOCKETFD fd) const
+{
+    std::lock_guard<std::mutex> l{_lock_close_fd};
+    return close(fd);
 }
 
 SOCKETFD TCPServer::_CreateSocket()
