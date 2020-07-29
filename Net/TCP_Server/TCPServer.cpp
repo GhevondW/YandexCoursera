@@ -50,7 +50,7 @@ void TCPServer::Run()
         if(client != -1){
             _thread_pool->EnqueueTask([=](){
                 char buff[MAX_BUFFER_SIZE];
-                // close(listening);
+                close(listening);
                 int bytes_received{};
                 do
                 {

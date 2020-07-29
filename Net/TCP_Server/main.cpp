@@ -6,7 +6,7 @@ using namespace std;
 using namespace gnet;
 
 void Resp(ConstServerPtr serv, int client_fd, const std::string& msg){
-    msg != "END" ? serv->Send(client_fd, msg) : serv->CloseSocketFd(client_fd);
+    msg != "END\r\n" ? serv->Send(client_fd, msg) : serv->CloseSocketFd(client_fd);
 }
 
 int main(){
