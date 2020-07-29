@@ -1,4 +1,4 @@
-#if 0
+#if 1
 //
 //  main.cpp
 //  Cursera_red

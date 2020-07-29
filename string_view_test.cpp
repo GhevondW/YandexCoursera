@@ -1,4 +1,4 @@
-#if 0
+#if 1
 //
 //  string_view_test.cpp
 //  Cursera_red

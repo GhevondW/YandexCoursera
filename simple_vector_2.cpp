@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #include "simple_vector_2.h"
 #include "test_runner.h"
 

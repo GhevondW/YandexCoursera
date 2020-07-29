@@ -1,4 +1,4 @@
-#if 0
+#if 1
 //
 //  universal_for_each.cpp
 //  Cursera_red

@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #include "airline_ticket.h"
 #include "test_runner.h"
 

@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #include "animals.h"
 #include "test_runner.h"
 

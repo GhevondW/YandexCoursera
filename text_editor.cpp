@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #include <string>
 #include "test_runner.h"
 using namespace std;

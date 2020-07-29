@@ -1,4 +1,4 @@
-#if 0 //TODO
+#if 1 //TODO
 #include "test_runner.h"
 #include <algorithm>
 #include <memory>

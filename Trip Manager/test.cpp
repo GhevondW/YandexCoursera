@@ -1,5 +1,5 @@
 //#include "old_trip_manager.h"  // ÑÐ¾ ÑÑ‚Ð°Ñ€Ñ‹Ð¼Ð¸ ÐºÐ»Ð°ÑÑÐ°Ð¼Ð¸ Ð²ÑÐµ Ñ‚ÐµÑÑ‚Ñ‹ Ð¿Ñ€Ð¾Ñ…Ð¾Ð´ÑÑ‚
-#if 0
+#if 1
 #include "new_trip_manager.h"
 
 #include "test_runner.h"

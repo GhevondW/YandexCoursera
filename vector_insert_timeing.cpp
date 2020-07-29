@@ -5,7 +5,7 @@
 //  Created by Ghevond Gevorgyan on 5/14/20.
 //  Copyright © 2020 Ghevond Gevorgyan. All rights reserved.
 //
-#if 0
+#if 1
 #include <iostream>
 #include <string>
 #include <vector>

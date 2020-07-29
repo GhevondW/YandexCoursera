@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #include "Common.h"
 #include "test_runner.h"
 

@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #include "geo2d.h"
 #include "game_object.h"
 
