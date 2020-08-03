@@ -9,6 +9,7 @@
 #include <mutex>
 #include <atomic>
 #include <cstring>
+#include <condition_variable>
 
 namespace gnet
 {
@@ -44,6 +45,8 @@ private:
     std::queue<Task>            _tasks{};
     std::mutex                  _tasks_lock{};
     std::atomic<bool>           _stop_signal{false};
+    std::mutex                  _cv_mutex{};
+    std::condition_variable     _cv{};
 };
 
 template<size_t N>
