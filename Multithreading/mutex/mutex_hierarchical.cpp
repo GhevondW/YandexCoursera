@@ -3,8 +3,8 @@
 #include <mutex>
 #include "hierarchical_mutex.h"
 
-hierarchical_mutex mutex_a(1000);
-hierarchical_mutex mutex_b(500);
+std::hierarchical_mutex mutex_a(1000);
+std::hierarchical_mutex mutex_b(500);
 
 using namespace std;
 #define ERROR "ERROR"

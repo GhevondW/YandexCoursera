@@ -10,8 +10,17 @@
 using ulong = unsigned long;
 using uint  = unsigned int;
 
+namespace std{
 
-class hierarchical_mutex
+struct GuardInterface
+{
+    virtual void lock() = 0;
+    virtual void unlock() = 0;
+    virtual bool try_lock() = 0;
+};
+
+
+class hierarchical_mutex: public GuardInterface
 {
 public:
     explicit hierarchical_mutex(ulong value)
@@ -22,20 +31,20 @@ public:
 
 public:
 
-    void lock()
+    void lock() override
     {
         _CheckForHierarchyViolation();
         _mutex.lock();
         _UpdateHierarchyValue();
     }
 
-    void unlock()
+    void unlock() override
     {
         _this_thread_hierarchy_value = _prev_hierarchy_value;
         _mutex.unlock();
     }
 
-    bool try_lock()
+    bool try_lock() override
     {
         _CheckForHierarchyViolation();
         if(!_mutex.try_lock()){
@@ -71,4 +80,5 @@ private:
 
 thread_local ulong hierarchical_mutex::_this_thread_hierarchy_value(ULONG_MAX);
 
+};
 #endif
