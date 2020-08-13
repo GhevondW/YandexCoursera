@@ -1,13 +1,7 @@
 #include <iostream>
-#include <mutex>
 #include <thread>
+#include <mutex>
 #include <atomic>
-
-//this is the example of std::lock function it alows us to lock multiple mutexes 
-//at same time without deadlocking
-#define COMBINE(X,Y) X##Y 
-#define ADOPTLOCK(m, line) std::lock_guard<std::mutex> COMBINE(adoptlock, line)(m, std::adopt_lock);
-#define LOCK(m, line) std::lock_guard<std::mutex> COMBINE(reglock, line)(m);
 
 class Data
 {
@@ -35,12 +29,15 @@ private:
 void Swap(DataWrapper& ldata, DataWrapper& rdata)
 {
     if(&ldata == &rdata) return;
-    std::lock(ldata._lock, rdata._lock);
-    // ADOPTLOCK(ldata._lock, __LINE__);
-    // ADOPTLOCK(rdata._lock, __LINE__);
-
-    std::lock_guard<std::mutex> adoptlock_line1(ldata._lock, std::adopt_lock);
-    std::lock_guard<std::mutex> adoptlock_line2(rdata._lock, std::adopt_lock);
+    //std::defer_lock allows us do not lock the mutex in construto
+    //unique lock has this interface
+    //1)lock()
+    //2)unlock()
+    //3)try_lock()
+    //it is same as mutex's interface
+    std::unique_lock<std::mutex> ll(ldata._lock, std::defer_lock);
+    std::unique_lock<std::mutex> rl(rdata._lock, std::defer_lock);
+    std::lock(ll, rl);
 
     std::cout<<"[SWAP]"<<std::endl;
 
@@ -49,10 +46,17 @@ void Swap(DataWrapper& ldata, DataWrapper& rdata)
     rdata._data = tmp;
 }
 
-int main()
-{
+using namespace  std;
 
-    DataWrapper dw1{{5}};
+int main(){
+
+    std::cout<<"[UNIQUE LOCK]"<<std::endl;
+
+    //we can use unique_lock as lock guard also 
+    //we can use it as unique locking mechanizm
+    //it alows as to do more than lock_guard
+
+        DataWrapper dw1{{5}};
     DataWrapper dw2{{5}};
     DataWrapper dw3{{5}};
 
