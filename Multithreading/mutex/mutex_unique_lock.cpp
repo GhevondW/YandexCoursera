@@ -48,6 +48,30 @@ void Swap(DataWrapper& ldata, DataWrapper& rdata)
 
 using namespace  std;
 
+//Example of using unique_lock
+void ReadData(string path)
+{
+    cout<<path<<":Reading file..."<<endl;
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+}
+
+void DoCommonStaff()
+{
+    cout<<"Common staff"<<endl;
+}
+
+std::mutex read_lock;
+
+void DoAsyncRead(string path)
+{
+    unique_lock<mutex> lock(read_lock);
+    ReadData(path);
+    lock.unlock();
+    DoCommonStaff();
+    lock.lock();
+    ReadData(path);
+}
+
 int main(){
 
     std::cout<<"[UNIQUE LOCK]"<<std::endl;
