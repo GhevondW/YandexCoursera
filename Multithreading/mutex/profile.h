@@ -42,3 +42,12 @@ private:
   LogDuration UNIQ_ID(__LINE__){message};
 
 #endif /* profile_h */
+
+void PrintMsg(const std::string&& msg)
+{
+  std::cout<<msg<<std::endl;
+}
+void PrintMsg(const std::string& msg)
+{
+  std::cout<<msg<<std::endl;
+}
