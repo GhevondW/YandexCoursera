@@ -11,16 +11,11 @@ namespace parallel
 	{
 		struct node
 		{
-
-			node(T item)
-				:_item(std::move(item))
-			{}
-
-			T _item;
-			std::unique_ptr<node> _next{nullptr};
+			std::shared_ptr<T>		_item{nullptr};
+			std::unique_ptr<node>	_next{nullptr};
 		};
 	public:
-		queue() = default;
+		queue();
 		~queue() = default;
 
 	public:
@@ -35,25 +30,29 @@ namespace parallel
 	};
 
 	template<typename T>
+	queue<T>::queue()
+		:_head(new node), _tail(_head.get())
+	{
+		
+	}
+
+	template<typename T>
 	auto queue<T>::Push(T value) -> void
 	{
-		std::unique_ptr<node> new_node{ new node{std::move(value)} };
-		node* new_tail = new_node.get();
-		if (_tail) {
-			_tail->_next = std::move(new_node);
-		}
-		else {
-			_head = std::move(new_node);
-		}
+		std::shared_ptr<T> new_item{ std::make_shared<T>(std::move(value)) };
+		std::unique_ptr<node> p{ new node };
+		_tail->_item = new_item;
+		node* new_tail = p.get();
+		_tail->_next = std::move(p);
 		_tail = new_tail;
 	}
 
 	template<typename T>
 	auto queue<T>::TryPop() -> std::shared_ptr<T>
 	{
-		if (!_head) return std::shared_ptr<T>(nullptr);
-		std::shared_ptr<T> ret = std::make_shared<T>(std::move(_head->_item));
-		auto old_head = std::move(_head);
+		if (_head.get() == _tail) return std::shared_ptr<T>{nullptr};
+		std::shared_ptr<T> ret = std::move(_head->_item);
+		std::unique_ptr<node> old_head = std::move(_head);
 		_head = std::move(old_head->_next);
 		return ret;
 	}
