@@ -55,7 +55,7 @@ int main()
 {
 	//f(A{});
 
-
+#if 1
 	std::vector<int> v1{ 1,2,3,4,9,10 };
 	std::vector<int> v2{ 5,6,7,8,11,12 };
 
@@ -69,6 +69,12 @@ int main()
 	t2.join();
 	t3.join();
 	t4.join();
+#else
 
+	int d{};
+	parallel::queue<int> q;
+	q.WaitPop();
+	q.WaitPop(d);
+#endif
 	return 0;
 }
