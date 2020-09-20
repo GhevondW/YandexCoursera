@@ -135,12 +135,16 @@ namespace parallel
 	template<typename T>
 	auto queue<T>::Iterate(std::function<void(T&)> func) -> void
 	{
-		std::lock(_mtx_head, _Mtx_init);
+		std::lock(_mtx_head, _mtx_tail);
 		std::lock_guard<std::mutex> lg_head{_mtx_head, std::adopt_lock};
 		std::lock_guard<std::mutex> lg_tail{_mtx_tail, std::adopt_lock};
 
-
-
+		node* head = _head.get();
+		while (head != _tail)
+		{
+			func(*head->_item);
+			head = head->_next.get();
+		}
 		//TODO all queue iterator
 	}
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "queue.h"
+#include "lookup_table.h"
 #include <vector>
 
 using namespace std;
@@ -55,7 +56,7 @@ int main()
 {
 	//f(A{});
 
-#if 1
+#if 0
 	std::vector<int> v1{ 1,2,3,4,9,10 };
 	std::vector<int> v2{ 5,6,7,8,11,12 };
 
@@ -73,8 +74,17 @@ int main()
 
 	int d{};
 	parallel::queue<int> q;
-	q.WaitPop();
-	q.WaitPop(d);
+	q.Push(5);
+	q.Push(4);
+	q.Push(3);
+	q.Push(2);
+	q.Push(1);
+	q.Push(0);
+
+	q.Iterate([](int& a) { cout << a << endl; });
+
+	parallel::lookup_table<int, int, 5> lt{};
+
 #endif
 	return 0;
 }
