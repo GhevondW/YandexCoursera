@@ -2,6 +2,7 @@
 #include "queue.h"
 #include "lookup_table.h"
 #include <vector>
+#include "list_lookup_table.h"
 
 using namespace std;
 
@@ -84,6 +85,12 @@ int main()
 	q.Iterate([](int& a) { cout << a << endl; });
 
 	parallel::lookup_table<int, int, 5> lt{};
+
+	parallel::list_lookup_table<int, int, 5> llt{};
+
+	llt.GetValue(23);
+	llt.AddOrUpdate(32,69);
+	llt.Remove(32);
 
 #endif
 	return 0;

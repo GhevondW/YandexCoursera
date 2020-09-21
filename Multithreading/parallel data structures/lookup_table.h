@@ -11,7 +11,7 @@
 
 namespace parallel 
 {
-	template<typename KEY, typename VALUE, size_t CL_COUNT, typename HASH = std::hash<KEY>>
+	template<typename KEY, typename VALUE, size_t CL_COUNT = 19, typename HASH = std::hash<KEY>>
 	class lookup_table
 	{
 	public:
