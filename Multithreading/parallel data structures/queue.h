@@ -107,7 +107,7 @@ namespace parallel
 	{
 		auto old_head = _PopHead();
 		if (old_head) {
-			value = std::move(old_head->_item);
+			value = std::move(*old_head->_item);
 		}
 		return old_head != nullptr;
 	}

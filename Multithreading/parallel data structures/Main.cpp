@@ -3,6 +3,7 @@
 #include "lookup_table.h"
 #include <vector>
 #include "list_lookup_table.h"
+#include "basic_thread_pool.h"
 
 using namespace std;
 
@@ -53,45 +54,51 @@ void RunPop()
 	}
 }
 
+void f()
+{
+
+	std::cout << std::this_thread::get_id()<<std::endl;
+
+}
+
 int main()
 {
-	//f(A{});
 
-#if 0
-	std::vector<int> v1{ 1,2,3,4,9,10 };
-	std::vector<int> v2{ 5,6,7,8,11,12 };
+	parallel::basic_thread_pool tp;
 
-	std::thread t1{RunPush, std::ref(v1)};
-	std::thread t2{RunPush, std::ref(v2)};
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
+	tp.SubmitTask(f);
 
-	std::thread t3{ RunPop };
-	std::thread t4{ RunPop };
 
-	t1.join();
-	t2.join();
-	t3.join();
-	t4.join();
-#else
+	std::cin.get();
 
-	int d{};
-	parallel::queue<int> q;
-	q.Push(5);
-	q.Push(4);
-	q.Push(3);
-	q.Push(2);
-	q.Push(1);
-	q.Push(0);
-
-	q.Iterate([](int& a) { cout << a << endl; });
-
-	parallel::lookup_table<int, int, 5> lt{};
-
-	parallel::list_lookup_table<int, int, 5> llt{};
-
-	llt.GetValue(23);
-	llt.AddOrUpdate(32,69);
-	llt.Remove(32);
-
-#endif
 	return 0;
 }
