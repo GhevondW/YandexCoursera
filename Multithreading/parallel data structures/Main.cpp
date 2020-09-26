@@ -54,50 +54,38 @@ void RunPop()
 	}
 }
 
+parallel::basic_thread_pool pool;
+
+
 void f()
 {
-
 	std::cout << std::this_thread::get_id()<<std::endl;
+}
 
+void Run()
+{
+	std::this_thread::sleep_for(std::chrono::milliseconds(std::rand()%4));
+	for (size_t i = 0; i < 20; i++)
+	{
+		pool.SubmitTask(f);
+	}
 }
 
 int main()
 {
 
-	parallel::basic_thread_pool tp;
+	
+	std::vector<std::thread> threads;
 
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
-	tp.SubmitTask(f);
+	for (size_t i = 0; i < 10; i++)
+	{
+		threads.push_back(std::thread{Run});
+	}
 
-
+	for (size_t i = 0; i < threads.size(); i++)
+	{
+		threads[i].join();
+	}
 	std::cin.get();
 
 	return 0;

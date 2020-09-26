@@ -16,8 +16,8 @@ namespace parallel
 		basic_thread_pool()
 			:_done(false),
 			_threads(),
-			//_joiner(_threads),
-			_tasks()
+			_tasks(),
+			_joiner(_threads)
 		{
 			auto thread_count = std::thread::hardware_concurrency();
 			try
@@ -36,12 +36,6 @@ namespace parallel
 		~basic_thread_pool()
 		{
 			_done = true;
-			for (size_t i = 0; i < _threads.size(); i++)
-			{
-				if (_threads[i].joinable()) {
-					_threads[i].join();
-				}
-			}
 		}
 
 		void SubmitTask(Task task)
@@ -68,8 +62,8 @@ namespace parallel
 	private:
 		std::atomic_bool			_done;
 		std::vector<std::thread>	_threads;
-		//join_threads				_joiner;
 		TasksQueue					_tasks;
+		join_threads				_joiner;
 	};
 }
 
