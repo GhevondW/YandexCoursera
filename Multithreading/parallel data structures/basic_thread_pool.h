@@ -61,8 +61,8 @@ namespace parallel
 
 	private:
 		std::atomic_bool			_done;
-		std::vector<std::thread>	_threads;
 		TasksQueue					_tasks;
+		std::vector<std::thread>	_threads;
 		join_threads				_joiner;
 	};
 }

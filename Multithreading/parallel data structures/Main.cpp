@@ -4,6 +4,8 @@
 #include <vector>
 #include "list_lookup_table.h"
 #include "basic_thread_pool.h"
+#include <future>
+#include "thread_pool_fw.h"
 
 using namespace std;
 
@@ -14,10 +16,10 @@ class A
 public:
 	A() { cout << "A ctor" << endl; counter++; };
 	~A() { cout << "A dtor" << endl;  counter--; };
-	//A(const A& other) { cout << "A copy ctor" << endl; }
-	//A(A&& other) { cout << "A move ctor" << endl; }
-	//A& operator=(const A& other) { cout << "A copy" << endl; }
-	//A& operator=(A&& other) { cout << "A move" << endl; }
+	A(const A& other) = delete;// { cout << "A copy ctor" << endl; }
+	A(A&& other) { cout << "A move ctor" << endl; }
+	A& operator=(const A& other) = delete;//{ cout << "A copy" << endl; }
+	A& operator=(A&& other) { cout << "A move" << endl; }
 };
 
 static const std::vector<int> values = {1,2,3,4,5,6,7,8};
@@ -71,22 +73,25 @@ void Run()
 	}
 }
 
+
 int main()
 {
 
 	
-	std::vector<std::thread> threads;
+	//std::vector<std::thread> threads;
 
-	for (size_t i = 0; i < 10; i++)
-	{
-		threads.push_back(std::thread{Run});
-	}
+	//for (size_t i = 0; i < 10; i++)
+	//{
+	//	threads.push_back(std::thread{Run});
+	//}
 
-	for (size_t i = 0; i < threads.size(); i++)
-	{
-		threads[i].join();
-	}
-	std::cin.get();
+	//for (size_t i = 0; i < threads.size(); i++)
+	//{
+	//	threads[i].join();
+	//}
+	//std::cin.get();
 
-	return 0;
+	parallel::thread_pool_fw fw;
+	fw.Submit([]() {return false; });
+
 }
