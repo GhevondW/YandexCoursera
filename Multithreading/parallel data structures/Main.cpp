@@ -6,6 +6,7 @@
 #include "basic_thread_pool.h"
 #include <future>
 #include "thread_pool_fw.h"
+#include "thread_pool_local_queue.h"
 
 using namespace std;
 
@@ -56,7 +57,7 @@ void RunPop()
 	}
 }
 
-parallel::basic_thread_pool pool;
+parallel::thread_pool_local_queue pool;
 
 
 void f()
@@ -69,7 +70,7 @@ void Run()
 	std::this_thread::sleep_for(std::chrono::milliseconds(std::rand()%4));
 	for (size_t i = 0; i < 20; i++)
 	{
-		pool.SubmitTask(f);
+		pool.Submit(f);
 	}
 }
 
@@ -78,20 +79,22 @@ int main()
 {
 
 	
-	//std::vector<std::thread> threads;
+	std::vector<std::thread> threads;
 
-	//for (size_t i = 0; i < 10; i++)
-	//{
-	//	threads.push_back(std::thread{Run});
-	//}
+	for (size_t i = 0; i < 10; i++)
+	{
+		threads.push_back(std::thread{Run});
+	}
 
-	//for (size_t i = 0; i < threads.size(); i++)
-	//{
-	//	threads[i].join();
-	//}
-	//std::cin.get();
+	for (size_t i = 0; i < threads.size(); i++)
+	{
+		threads[i].join();
+	}
+	std::cin.get();
 
 	parallel::thread_pool_fw fw;
 	fw.Submit([]() {return false; });
+
+	parallel::thread_pool_local_queue lq;
 
 }
