@@ -35,11 +35,11 @@ namespace algo
 		{
 			friend class List;
 		private:
-			Iterator() = default;
 			explicit Iterator(Node* ref)
 				:_ref(ref)
 			{}
 		public:
+			Iterator() = default;
 			Iterator(const Iterator& other) = default;
 			Iterator(Iterator&& other) :_ref(other._ref) { other._ref = nullptr; }
 			Iterator& operator=(const Iterator& other) = default;
@@ -74,10 +74,11 @@ namespace algo
 				return Iterator{nullptr};
 			}
 
-			std::shared_ptr<T> operator*()
+			T& operator*()
 			{
 				if (!_ref) throw "invalid operation";
-				return _ref->data;
+				if (!_ref->data.get()) throw "invalid operation";
+				return *_ref->data;
 			}
 
 			Iterator& operator--() = delete;       // Prefix decrement operator.
@@ -133,11 +134,49 @@ namespace algo
 			return Iterator{ nullptr };
 		}
 
-		
+		auto Insert(Iterator position, T value) -> bool
+		{
+			if (position._ref != nullptr) {
+				++_size;
+				std::shared_ptr<T> new_data{ std::make_shared<T>(std::move(value)) };
+
+				Node* current = position._ref;
+				std::unique_ptr<Node> current_next = std::move(current->next);
+
+				current->next = std::make_unique<Node>();
+				current->next->data = std::move(new_data);
+				current->next->next = std::move(current_next);
+				return true;
+			}
+			return false;
+		}
+
+		auto Delete(Iterator position) -> bool
+		{
+			if (position._ref != nullptr && _size > 0) {
+				--_size;
+				Node* current = position._ref;
+				std::unique_ptr<Node> current_next = std::move(current->next);
+				current->next = std::move(current_next->next);
+				return true;
+			}
+			return false;
+		}
+
+		auto PopFront() -> bool
+		{
+			if (_head->data.get() != nullptr && _size > 0) {
+				--_size;
+				std::unique_ptr<Node> next = move(_head->next);
+				_head = std::move(next);
+				return true;
+			}
+			return false;
+		}
 
 	private:
-		std::unique_ptr<Node>	_head;
-		size_t					_size;
+		std::unique_ptr<Node>	_head{nullptr};
+		size_t					_size{};
 	};
 
 	

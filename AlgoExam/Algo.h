@@ -21,6 +21,7 @@ namespace algo
 			}
 		}
 	}
+
 	template<typename T, typename FunctionCond>
 	void InsertionSort(std::vector<T>& const data, FunctionCond cond)
 	{
