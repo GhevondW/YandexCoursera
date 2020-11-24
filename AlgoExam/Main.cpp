@@ -1,40 +1,23 @@
-#include "Algo.h"
+//: C11:HowMany.cpp
+// A class that counts its objects
+#include <fstream>
+#include <string>
 #include <iostream>
-#include "List.h"
-#include <vector>
-
+#include "LinkedList.h"
 using namespace std;
 
+const extern int X;
 
-int main()
-{
+int main() {
+	algo::LinkedList<string> ll;
 
-	std::vector<int> data = {9,2,1,3,6,8,7,4,5,2,1,5,6,8,5,4,1,2,3,6,9,8,5,4,7,5,2,1,3,7};
+	ll.PushBack("1");
+	ll.PushBack("2");
+	ll.PushBack("3");
+	auto ret = ll.PushBack("4");
+	auto ret_begin = ll.PushFront("0");
 
-	//algo::BubbleSort(data, [](int a, int b) {return a > b; });
-	//algo::InsertionSort(data, [](int a, int b) {return a > b; });
-	algo::SelectionSort(data, [](int a, int b) {return a > b; });
-
-	auto index = algo::BinarySearch(data, 5);
-
-	algo::List<int> list;
-
-	list.PushBack(4);
-	list.PushBack(3);
-	list.PushBack(2);
-
-	auto res = list.Find(4);
-
-	list.Insert(res, 8);
-	list.Delete(res);
-	list.PopFront();
-
-
-	cout << list.Size() << endl;
-
-	algo::List<int>::Printer p;
-	p(list);
-
+	auto ret1 = ll.PopBack();
 
 	return 0;
-}
+} ///:~
