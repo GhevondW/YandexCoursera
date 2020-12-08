@@ -1,102 +1,47 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 
-#include <memory>
+#include <deque>
 
 namespace algo
 {
 
-	template<typename T>
+	template<class T, class C = std::deque<T>>
 	class Queue
 	{
 
-		struct Node;
-
-		using Type = T;
-		using Data = std::shared_ptr<T>;
-		using Next = std::unique_ptr<Node>;
-		using Head = Next;
-		using Tail = Node*;
-		using NRef = Tail;
-
-		struct Node
-		{
-			Data data{nullptr};
-			Next next{nullptr};
-		};
+        using _DataType = T;
+        using _Container = C;
 
 	public:
 		Queue() = default;
-		~Queue() = default;
+        Queue(const Queue&) = default;
+        Queue(Queue&&) = default;
+        ~Queue() = default;
 
-		auto Empty() const->bool
-		{
-			return !_size;
-		}
-		auto Size()	const->size_t
-		{
-			return _size;
-		}
-
-		auto Front() -> T&
-		{
-			if (_head == nullptr || _head->data.get() == nullptr) {
-				throw "invalid operation";
-			}
-			return *(_head->data);
-		}
-
-		auto Front() const -> const T&
-		{
-			if (_head == nullptr || _head->data.get() == nullptr) {
-				throw "invalid operation";
-			}
-			return *(_head->data);
-		}
-
-		auto Back() -> T&
-		{
-			if (_tail == nullptr || _tail->data.get() == nullptr) {
-				throw "invalid operation";
-			}
-			return *(_tail->data.get());
-		}
-
-		auto Back() const -> const T&
-		{
-			if (_tail == nullptr || _tail->data.get() == nullptr) {
-				throw "invalid operation";
-			}
-			return *(_tail->data);
-		}
-
-		auto Push(T value) -> void
-		{
-			std::unique_ptr<Node> new_node = std::make_unique<Node>();
-			new_node->data = std::make_shared<T>(std::move(value));
-			if (_head.get() == _tail && _tail == nullptr)
-			{
-				_head = std::move(new_node);
-				_tail = _head.get();
-			}
-			else {
-				_tail->next = std::move(new_node);
-				_tail = _tail->next.get();
-			}
-			++_size;
-		}
-
-		auto Pop() -> void
-		{
-			if (Empty()) throw "invalid operation";
-			_head = std::move(_head->next);
-			--_size;
-		}
+        Queue& operator=(const Queue& other)
+        {
+            this->_c = other._c;
+            return *this;
+        }
+        
+        Queue& operator=(Queue&& other)
+        {
+            this->_c = std::move(other._c);
+            return *this;
+        }
+        auto Empty() const -> bool { return _c.empty(); }
+        auto Size()	const -> size_t { return _c.size(); }
+        auto Front() -> T& { return _c.front(); }
+        auto Front() const -> const T& { return _c.front(); }
+        auto Back() -> T&{ return _c.back(); }
+        auto Back() const -> const T& { return _c.back(); }
+        auto Push(const T& value) -> void { _c.push_back(value); }
+        auto Push(T&& value) -> void { _c.push_back(std::move(value)); }
+        auto Pop() -> void { _c.pop_front(); }
 
 	private:
-		Head	 _head{nullptr};
-		Tail	 _tail{nullptr};
-		size_t	 _size{0};
+        _Container _c{};
 	};
 }
 
