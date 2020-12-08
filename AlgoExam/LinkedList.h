@@ -26,20 +26,11 @@ namespace algo
 			NodeRef						prev{nullptr};
 
 			Node() = default;
-			//Node(const Node& other)
-			//	:data(Data{nullptr}),
-			//	next(std::unique_ptr<Node>(nullptr)),
-			//	prev(nullptr)
-			//{
-			//	if (other.data) {
-			//		DataType copy = *other.data;
-			//		data = std::make_shared<DataType>(std::move(copy));
-			//	}
-			//}
 		};
 
 		struct Iterator
 		{
+			friend class LinkedList<T>;
 		public:
 			Iterator() = default;
 			explicit Iterator(NodeRef ref)
@@ -89,6 +80,34 @@ namespace algo
 				return Iterator{ ref };
 			}
 
+			NodeRef operator &()
+			{
+				return _node;
+			}
+
+			DataType& operator *()
+			{
+				if (_node != nullptr) {
+					return *(_node->data.get());
+				}
+				throw "invalid operation";
+			}
+
+			bool operator==(const Iterator& other) const
+			{
+				return _node == other._node;
+			}
+
+			bool operator!=(const Iterator& other) const
+			{
+				return !((*this) == other);
+			}
+
+			operator bool() const
+			{
+				return _node != nullptr;
+			}
+
 		private:
 			NodeRef _node{nullptr};
 		};
@@ -119,6 +138,7 @@ namespace algo
 	private:
 
 		auto _AddNode(bool back = true)			-> void;
+		auto _InsertAfter(ConstIter, DataType)  ->std::pair<bool, Iterator>;
 
 	private:
 		std::unique_ptr<Node>	_head{nullptr};
@@ -216,21 +236,72 @@ namespace algo
 	}
 
 	template<typename T>
-	auto _ll<T>::InsertBefore(ConstIter, DataType)->std::pair<bool, Iterator>
+	auto _ll<T>::InsertBefore(ConstIter iter, DataType value)->std::pair<bool, Iterator>
 	{
-		return { false, Iterator{nullptr} };
+		if (!iter) return { false, Iterator{nullptr} };
+		NodeRef ref = iter._node;
+
+		if (ref == _head.get()) {
+			PushFront(value);
+			++_size;
+			return { true, Iterator{_head.get()} };
+		}
+		else {
+			ConstIter prev{ref->prev};
+			return _InsertAfter(prev, value);
+		}
 	}
 
 	template<typename T>
-	auto _ll<T>::InsertAfter(ConstIter, DataType)->std::pair<bool, Iterator>
+	auto _ll<T>::InsertAfter(ConstIter iter, DataType value)->std::pair<bool, Iterator>
 	{
-		return { false, Iterator{nullptr} };
+		return _InsertAfter(iter, value);
 	}
 
 	template<typename T>
-	auto _ll<T>::Delete(ConstIter)-> bool
+	auto _ll<T>::_InsertAfter(ConstIter iter, DataType value)->std::pair<bool, Iterator>
 	{
-		return false;
+		if (!iter) return { false, Iterator{nullptr} };
+		NodeRef ref = iter._node;
+
+		if (ref == _tail)
+		{
+			PushBack(value);
+			++_size;
+			return { true, Iterator{_tail} };
+		}
+		else {
+			std::unique_ptr<Node> new_node = std::make_unique<Node>();
+			new_node->data = std::make_shared<DataType>(std::move(value));
+
+			new_node->next = std::move(ref->next);
+			new_node->next->prev = new_node.get();
+			new_node->prev = ref;
+			ref->next = std::move(new_node);
+			++_size;
+			return { true, Iterator{ref->next.get()} };
+		}
+	}
+
+	template<typename T>
+	auto _ll<T>::Delete(ConstIter iter)-> bool
+	{
+		if (!iter) return false;
+		NodeRef ref = iter._node;
+
+		NodeRef prev = ref->prev;
+		std::unique_ptr<Node> next = std::move(ref->next);
+
+		if (prev == nullptr) {
+			_head = std::move(next);
+		}
+		else {
+			prev->next = std::move(next);
+			prev->next->prev = prev;
+		}
+
+		--_size;
+		return true;
 	}
 
 	template<typename T>
