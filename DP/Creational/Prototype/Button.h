@@ -28,7 +28,9 @@ struct IButton
     virtual auto PrintWidth()         -> void = 0;
     virtual auto PrintHeight()        -> void = 0;
     virtual auto PrintText()          -> void = 0;
-    virtual auto Clone() const      -> std::shared_ptr<IButton> = 0;
+
+    // this method provides the prototyping functionality for each subclass
+    virtual auto Clone() const      -> std::shared_ptr<IButton> = 0; 
 
     int GetWidth() const { return _width; }
     int GetHeight() const { return _height; }
