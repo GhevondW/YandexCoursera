@@ -46,7 +46,7 @@ public:
 	virtual IBuilder& SetGPS(const bool val) = 0;
 	virtual IBuilder& SetChip(const bool val) = 0;
 	virtual IBuilder& SetAI(const bool val) = 0;
-	virtual Car* Build() = 0;
+	virtual std::shared_ptr<Car> Build() = 0;
 };
 
 class CarBuilder : public IBuilder
@@ -66,10 +66,10 @@ public:
 	IBuilder& SetGPS(const bool val) override;
 	IBuilder& SetChip(const bool val) override;
 	IBuilder& SetAI(const bool val) override;
-	Car* Build() override;
+	std::shared_ptr<Car> Build() override;
 
 private:
-	Car* _pCar{ nullptr };
+	std::shared_ptr<Car> _pCar{ nullptr };
 };
 
 //CAR
@@ -188,7 +188,7 @@ IBuilder& CarBuilder::SetAI(const bool val)
 	_pCar->_bAudiAI = val;
 	return *this;
 }
-Car* CarBuilder::Build()
+std::shared_ptr<Car> CarBuilder::Build()
 {
 	return _pCar;
 }

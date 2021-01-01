@@ -6,7 +6,7 @@ int main()
 {
 	std::cout << "---Builder---" << std::endl;
 
-	auto* car = Car::Make()
+	auto car = Car::Make()
 		.SetAI(true)
 		.SetChip(true)
 		.SetColor(Color::BLACK)
@@ -18,7 +18,5 @@ int main()
 		.SetDoorsCount(5)
 		.Build();
 
-
-    delete car;
 	return 0;
 }
