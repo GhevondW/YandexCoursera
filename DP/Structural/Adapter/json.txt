@@ -1,0 +1,10 @@
+Gheovnd,Gevorgyan,MTT-919,98,32
+Student1,Sln1,MTT-916,16,3
+Student2,Sln2,MTT-916,64,2
+Student3,Sln3,MTT-916,16,9
+Student4,Sln4,MTT-916,32,3
+Student5,Sln5,MTT-916,16,2
+Student6,Sln6,MTT-916,16,3
+Student7,Sln7,MTT-916,16,9
+Student8,Sln8,MTT-916,45,9
+Student9,Sln9,MTT-916,16,2
