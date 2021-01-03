@@ -1,4 +1,4 @@
-Gheovnd~Gevorgyan~MTT-919~98~1
+Gheovnd~Gevorgyan~MTT-919~98~32
 Student1~Sln1~MTT-916~16~3
 Student2~Sln2~MTT-916~64~2
 Student3~Sln3~MTT-916~16~9
