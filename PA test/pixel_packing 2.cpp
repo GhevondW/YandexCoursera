@@ -20,7 +20,8 @@ int pack(RGBA pixel);
 
 int main(int argc, const char * argv[]){
     /*
-     Write a function that will get any of the pixel types defined above (RGBA, RGB) and pack them in integer. Such that regardless of platform endianness pixel is written uniformly.
+     Write a function that will get any of the pixel types defined above (RGBA, RGB) and pack them in integer.
+     Such that regardless of platform endianness pixel is written uniformly.
     */
     
     return 0;
