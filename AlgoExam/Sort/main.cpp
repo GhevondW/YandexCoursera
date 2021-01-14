@@ -35,7 +35,7 @@ int main()
     // }
     
     // { LOG_DURATION("Speed HeapSort");
-        MergeSort(arr, CompareMore<int>);
+        QuickSort(arr, CompareLess<int>);
     // }
 
     for (size_t i = 0; i < MIN(s, 40); i++)
