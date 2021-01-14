@@ -2,6 +2,7 @@
 #define _BOUBLE_SORT_H_
 
 #include <utility>
+#include <vector>
 
 template<class T, class Comparator>
 void BoubleSort(std::vector<T>& data, Comparator comp)

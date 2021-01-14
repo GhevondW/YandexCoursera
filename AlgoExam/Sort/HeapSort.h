@@ -3,6 +3,7 @@
 
 #include <utility>
 #include "Defines.h"
+#include <vector>
 
 template<class T, class Comparator>
 void Heapify(std::vector<T>& data, const size_t size, const size_t index, Comparator comp)

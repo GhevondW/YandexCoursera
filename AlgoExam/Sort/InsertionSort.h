@@ -2,6 +2,7 @@
 #define _INSERTION_SORT_H_
 
 #include <utility>
+#include <vector>
 
 template<class T, class Comparator>
 void InsertionSort(std::vector<T>& data, Comparator comp)

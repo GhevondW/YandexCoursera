@@ -5,6 +5,8 @@
 #include "InsertionSort.h"
 #include "Defines.h"
 #include "HeapSort.h"
+#include "QuickSort.h"
+#include "MergeSort.h"
 using namespace std;
 
 template<class T>
@@ -32,19 +34,9 @@ int main()
     //     arr.emplace_back(i);
     // }
     
-    // { LOG_DURATION("Speed SelectionSort");
-    //     SelectionSort(arr, CompareLess<int>);
+    // { LOG_DURATION("Speed HeapSort");
+        MergeSort(arr, CompareMore<int>);
     // }
-
-    // { LOG_DURATION("Speed InsertionSort");
-    //     InsertionSort(arr, CompareLess<int>);
-    // }
-
-    // { LOG_DURATION("Speed BoubleSort");
-    //     BoubleSort(arr, CompareLess<int>);
-    // }
-
-    HeapSort(arr, CompareLess<int>);
 
     for (size_t i = 0; i < MIN(s, 40); i++)
     {
