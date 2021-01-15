@@ -18,7 +18,7 @@
  * Please see the question for deletion of tree for details. 
  * Postorder traversal is also useful to get the postfix expression of an expression tree. 
  * Please see http://en.wikipedia.org/wiki/Reverse_Polish_notation to for the usage of postfix expression. 
- * 
+ * Time Complexity: O(n)
  **/
 
 void Postorder(Node* ref)

@@ -16,7 +16,7 @@
  * Preorder traversal is used to create a copy of the tree. 
  * Preorder traversal is also used to get prefix expression on of an expression tree.
  * Please see http://en.wikipedia.org/wiki/Polish_notation to know why prefix expressions are useful.
- *
+ * Time Complexity: O(n)
  **/
 
 void Preorder(Node* ref)

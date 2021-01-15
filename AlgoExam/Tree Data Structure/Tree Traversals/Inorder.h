@@ -16,7 +16,7 @@
  * Uses of Inorder
  * In case of binary search trees (BST), Inorder traversal gives nodes in non-decreasing order.
  * To get nodes of BST in non-increasing order, a variation of Inorder traversal where Inorder traversal s reversed can be used.
- *
+ * Time Complexity: O(n)
  **/
 
 void Inorder(Node* ref)
