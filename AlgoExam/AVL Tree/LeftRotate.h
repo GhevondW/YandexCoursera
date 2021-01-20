@@ -53,22 +53,23 @@
  * 
  * */
 
-void LeftRotate(Node* current)
+bool LeftRotate(Node* current)
 {
-    if(current == nullptr || current->right == nullptr) return;
+    if(current == nullptr || current->right == nullptr) return false;
     std::unique_ptr<Node> extracted_right = std::move(current->right);
     extracted_right->parent = nullptr;
 
     std::unique_ptr<Node> extracted_top{nullptr};
 
     Node* p = current->parent;
-    bool left = true;
-    if(p->left.get() == current){
+    if(p == nullptr) return false;
+
+    bool left = p->left.get() == current;
+    if(left){
         extracted_top = std::move(p->left);
     }
     else{
         extracted_top = std::move(p->right);
-        left = false;
     }
     extracted_top->parent = nullptr;
 
@@ -87,7 +88,7 @@ void LeftRotate(Node* current)
         p->right = std::move(extracted_right);
         p->right->left = std::move(extracted_top);
     }
-
+    return true;
 }
 
 #endif

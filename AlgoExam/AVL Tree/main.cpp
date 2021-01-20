@@ -2,9 +2,11 @@
 #include "Node.h"
 #include "Inorder.h"
 #include "LeftRotate.h"
+#include "RightRotate.h"
 using namespace std;
 
 /***
+ * https://www.programiz.com/dsa/avl-tree
  * 
  * AVL tree is a self-balancing binary search tree in which each node maintains
  * extra information called a balance factor whose value is either -1, 0 or +1.
@@ -53,8 +55,12 @@ int main()
     root->right->right = std::make_unique<Node>(30, root->right.get());
     root->right->right->right = std::make_unique<Node>(35, root->right->right.get());
     root->right->left = std::make_unique<Node>(16, root->right.get());
+    root->left->left = std::make_unique<Node>(8, root->left.get());
+    root->left->left->left = std::make_unique<Node>(5, root->left->left.get());
 
-    LeftRotate(root->right.get());
+    if(LeftRotate(root->right.get())) cout<<"True Left"<<endl;
+
+    if(RightRotate(root->left.get())) cout<<"True Right"<<endl;
 
     PreorderCheckParents(root.get(), nullptr);
 

@@ -6,7 +6,10 @@
 struct Node
 {
     Node() = default;
-    Node(int val, Node* p = nullptr):value(val), parent(p){}
+    Node(int val, Node* p = nullptr):
+    value(val),
+    parent(p){}
+    
     int value{};
     Node* parent{nullptr};
     std::unique_ptr<Node> left{nullptr};
