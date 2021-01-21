@@ -3,6 +3,7 @@
 #include "Inorder.h"
 #include "LeftRotate.h"
 #include "RightRotate.h"
+#include "AVLTree.h"
 using namespace std;
 
 /***
@@ -40,23 +41,24 @@ using namespace std;
  * 
  * There are two types of rotations:
  * 
- * 1) See LeftRotate.h
- * 2) See RightRotate.h
+ * 1) See Left Rotate -> LeftRotate.h
+ * 2) See Right Rotate -> RightRotate.h
+ * 3) See Algorithm to insert a newNode -> AVLTree.h
  * 
  * */
 
 int main()
 {
     cout<<"AVL Tree"<<endl;
-
-    std::shared_ptr<Node> root = std::make_shared<Node>(15);
-    root->left = std::make_unique<Node>(10, root.get());
-    root->right = std::make_unique<Node>(25, root.get());
-    root->right->right = std::make_unique<Node>(30, root->right.get());
-    root->right->right->right = std::make_unique<Node>(35, root->right->right.get());
-    root->right->left = std::make_unique<Node>(16, root->right.get());
-    root->left->left = std::make_unique<Node>(8, root->left.get());
-    root->left->left->left = std::make_unique<Node>(5, root->left->left.get());
+/*
+    shared_ptr<Node> root = make_shared<Node>(15);
+    root->left = make_unique<Node>(10, root.get());
+    root->right = make_unique<Node>(25, root.get());
+    root->right->right = make_unique<Node>(30, root->right.get());
+    root->right->right->right = make_unique<Node>(35, root->right->right.get());
+    root->right->left = make_unique<Node>(16, root->right.get());
+    root->left->left = make_unique<Node>(8, root->left.get());
+    root->left->left->left = make_unique<Node>(5, root->left->left.get());
 
     if(LeftRotate(root->right.get())) cout<<"True Left"<<endl;
 
@@ -67,6 +69,23 @@ int main()
     Inorder(root.get(), [](int a)
     {
         cout<<a<<", ";
+    });
+    cout<<endl;
+*/
+
+    AVLTree<int> tree;
+
+    tree.Insert(33);
+    tree.Insert(53);
+    tree.Insert(13);
+    tree.Insert(61);
+    tree.Insert(11);
+    tree.Insert(21);
+    tree.Insert(8);
+
+    tree.Inorder([](const int& a, int b)
+    {
+        cout<<"("<<a<<", "<<b<<"), ";
     });
     cout<<endl;
 
