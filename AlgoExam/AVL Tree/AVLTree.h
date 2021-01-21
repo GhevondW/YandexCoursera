@@ -6,6 +6,7 @@
 #include <memory>
 #include <functional>
 #include <stack>
+#include <vector>
 
 template<typename T>
 class AVLTree
@@ -35,9 +36,14 @@ public:
 private:
 
     //Calculates the max height of the tree
-    size_t  _Height(_Node* root) const;
-    void    _Inorder(_Node* root, _Callback) const;
-    void    _UpdateBalanceFactors(std::stack<_Node*>& path);
+    size_t                  _Height(_Node* root) const;
+    void                    _Inorder(_Node* root, _Callback) const;
+    //Input - The nodes for balance factor calculation
+    //Output - The nodes which are needed to be balanced
+    std::vector<_Node*>     _UpdateBalanceFactors(const std::vector<_Node*>& path);
+    void                    _BalanceNodes(const std::vector<_Node*>& nodes);
+    void                    _RightRotate(_Node* current);
+    void                    _LeftRotate(_Node* current);
 
 private:
     size_t                  _size{};
@@ -109,12 +115,12 @@ void AVLTree<T>::Insert(_Type new_value)
     const _Type& value = new_node->data;
     _Node* current = _root.get();
 
-    std::stack<_Node*> path;
+    std::vector<_Node*> path;
 
     while (current != nullptr)
     {
         const _Type& ref = current->data;
-        path.push(current);
+        path.push_back(current);
         if(ref > value)
         {
             if(current->left == nullptr)
@@ -173,18 +179,131 @@ size_t AVLTree<T>::_Height(_Node* root) const
     return left_height > right_height ? left_height : right_height;
 }
 
+//This is the simple method for balance factors calculation
 template<class T>
-void AVLTree<T>::_UpdateBalanceFactors(std::stack<_Node*>& path)
+std::vector<typename AVLTree<T>::_Node*> AVLTree<T>::_UpdateBalanceFactors(const std::vector<_Node*>& path)
 {
-    while (!path.empty())
+    std::vector<_Node*> ret;
+    auto current = std::begin(path);
+    while (current != std::end(path))
     {
-        _Node* top = path.top();
+        _Node* top = *current;
         size_t lh = _Height(top->left.get());
         size_t rh = _Height(top->right.get());
 
-        top->bf = lh - rh;
+        top->bf = (int)(lh - rh);
+        if(top->bf > 1 || top->bf < -1){
+            ret.push_back(top);
+        }
+        
+        ++current;
+    }
+    return ret;
+}
 
-        path.pop();
+template<class T>
+void AVLTree<T>::_BalanceNodes(const std::vector<_Node*>& nodes)
+{
+    auto current = nodes.rbegin();
+    while (current != nodes.rend()) {
+        
+        
+        
+        ++current;
+    }
+}
+
+template<class T>
+void AVLTree<T>::_RightRotate(_Node* current)
+{
+    if(current == nullptr || current->left == nullptr) return;
+    std::unique_ptr<_Node> extracted_top{nullptr};
+    std::unique_ptr<_Node> extracted_left{nullptr};
+
+    _Node* p = current->parent;
+    bool root = (p == nullptr);
+    bool right{false};
+    if(!root){
+        right = p->right.get() == current;
+        if(right)
+            extracted_top = std::move(p->right);
+        else
+            extracted_top = std::move(p->left);
+    }
+    else{
+        extracted_top = std::move(_root);
+    }
+    
+    extracted_top->parent = nullptr;
+    
+    extracted_left = std::move(extracted_top->left);
+    extracted_left->parent = nullptr;
+
+    extracted_top->left = std::move(extracted_left->right);
+    if(extracted_top->left != nullptr){
+        extracted_top->left->parent = extracted_top.get();
+    }
+
+    extracted_left->parent = p;
+    extracted_left->right = std::move(extracted_top);
+    extracted_left->right->parent = extracted_left.get();
+    
+    if(!root){
+        if(right)
+            p->right = std::move(extracted_left);
+        else
+            p->left = std::move(extracted_left);
+    }
+    else{
+        extracted_left->parent = nullptr;
+        _root = std::move(extracted_left);
+    }
+}
+
+template<class T>
+void AVLTree<T>::_LeftRotate(_Node* current)
+{
+    if(current == nullptr || current->right == nullptr) return;
+    std::unique_ptr<_Node> extracted_top{nullptr};
+    std::unique_ptr<_Node> extracted_right{nullptr};
+
+    _Node* p = current->parent;
+    bool root = (p == nullptr);
+    bool right{false};
+    if(!root){
+        right = p->right.get() == current;
+        if(right)
+            extracted_top = std::move(p->right);
+        else
+            extracted_top = std::move(p->left);
+    }
+    else{
+        extracted_top = std::move(_root);
+    }
+    
+    extracted_top->parent = nullptr;
+    
+    extracted_right = std::move(extracted_top->right);
+    extracted_right->parent = nullptr;
+
+    extracted_top->right = std::move(extracted_right->left);
+    if(extracted_top->right != nullptr){
+        extracted_top->right->parent = extracted_top.get();
+    }
+
+    extracted_right->parent = p;
+    extracted_right->left = std::move(extracted_top);
+    extracted_right->left->parent = extracted_right.get();
+    
+    if(!root){
+        if(right)
+            p->right = std::move(extracted_right);
+        else
+            p->left = std::move(extracted_right);
+    }
+    else{
+        extracted_right->parent = nullptr;
+        _root = std::move(extracted_right);
     }
 }
 
