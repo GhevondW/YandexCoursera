@@ -83,6 +83,8 @@ int main()
     tree.Insert(21);
     tree.Insert(8);
 
+    // PreorderCheckParents(, nullptr);
+
     tree.Inorder([](const int& a, int b)
     {
         cout<<"("<<a<<", "<<b<<"), ";

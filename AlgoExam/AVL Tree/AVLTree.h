@@ -145,7 +145,13 @@ void AVLTree<T>::Insert(_Type new_value)
         }
     }
 
-    _UpdateBalanceFactors(path);
+    //The nodes which are needed to be balanced
+    auto balance = _UpdateBalanceFactors(path);
+    
+    _BalanceNodes(balance);
+    
+    //in the end of balanceing this vector should contain 0 elements
+    auto res = _UpdateBalanceFactors(path);
 
     ++_size;
 }
@@ -207,7 +213,41 @@ void AVLTree<T>::_BalanceNodes(const std::vector<_Node*>& nodes)
     auto current = nodes.rbegin();
     while (current != nodes.rend()) {
         
+        _Node* ref = *current;
+        int bf = ref->bf;
         
+        if(bf > 1){
+            //Right Rotate
+            _Node* left = ref->left.get();
+            _Node* left_left = left->left.get();
+            _Node* left_right = left->right.get();
+            if(left_left != nullptr){
+                _RightRotate(ref);
+                return;
+            }
+            
+            if(left_right != nullptr){
+                _LeftRotate(left);
+                _RightRotate(ref);
+                return;
+            }
+        }
+        else{
+            //Left Rotate
+            _Node* right = ref->right.get();
+            _Node* right_left = right->left.get();
+            _Node* right_right = right->right.get();
+            if(right_right != nullptr){
+                _LeftRotate(ref);
+                return;
+            }
+            
+            if(right_left != nullptr){
+                _RightRotate(right);
+                _LeftRotate(ref);
+                return;
+            }
+        }
         
         ++current;
     }
