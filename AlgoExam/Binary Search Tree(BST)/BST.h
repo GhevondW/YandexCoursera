@@ -180,7 +180,7 @@ void BST<T>::Insert(const _Type& value)
                 }
                 current = current->left.get();
             }
-            else{
+            else if(ref < value){
                 if(current->right == nullptr)
                 {
                     new_node->parent = current;
@@ -188,6 +188,9 @@ void BST<T>::Insert(const _Type& value)
                     break;
                 }
                 current = current->right.get();
+            }
+            else{
+                return;
             }
         }
     }

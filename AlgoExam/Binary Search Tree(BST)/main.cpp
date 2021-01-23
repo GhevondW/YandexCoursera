@@ -24,6 +24,7 @@ int main()
     set.Insert(8);
     set.Insert(3);
     set.Insert(1);
+    set.Insert(1);
     set.Insert(6);
     set.Insert(4);
     set.Insert(7);
